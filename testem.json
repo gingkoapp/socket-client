@@ -1,0 +1,13 @@
+{
+  "framework": "mocha",
+  "launch_in_ci": ["phantomjs"],
+  "launch_in_dev": ["phantomjs"],
+  "src_files": [
+    "node_modules/jquery-browser/lib/jquery.js",
+    "node_modules/underscore/underscore.js",
+    "node_modules/backbone/backbone.js",
+    "node_modules/chai/chai.js",
+    "backbone-id.js",
+    "test/*.js"
+  ]
+}
