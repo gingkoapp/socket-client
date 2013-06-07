@@ -52,7 +52,7 @@
     onremove: function(collection, data) {
       var model = collection.get(data.id);
       if (!model) return;
-      model.remove(data.json, { socket: true });
+      collection.remove(data.json, { socket: true });
     }
   });
 

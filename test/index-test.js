@@ -46,6 +46,15 @@ describe('Backbone.Socket', function() {
     dima.socket.disconnect();
   });
 
+  it('ignores events with socket: true', function(done) {
+    ivan.cards.remove(ivan.cards.get(1), { socket: true });
+
+    alex.manager.on('remove-cards', done);
+    dima.manager.on('remove-cards', done);
+
+    _.delay(done, 100);
+  });
+
   it('emits add event', function(done) {
     ivan.cards.add({ id: 4, name: 'test add', treeId: 1 });
     var next = _.after(2, done.bind(null, null));
