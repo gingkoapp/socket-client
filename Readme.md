@@ -1,49 +1,38 @@
-# backbone-socket
+# Backbone.Socket
+
+  Sync Backbone.Collection instance with server through socket.io.
 
 ## Example
 
 ```js
-/**
- * Define collection and Backbone.Socket instance
- */
-
-var Notes = Backbone.Collection.extend({
-  // required option to specify namespace
-  // notes:add, notes:change, notes:remove
-  // also you can specify socketEvents: { add: '1', change: '2', remove: '3' }
-  socket: 'notes'
+// Define collection and Backbone.Socket instance
+var Cards = Backbone.Collection.extend({
+  // required option to specify namespace for socket.io events
+  socket: 'cards' // add-cards, change-cards, remove-cards
 });
-
-var SocketManager = Backbone.Socket.extend({
-  // prepare data to Object(id, json, socket) format
-  parse: function(data) {
-    return { id: data.noteId, json: data.json, socket: data.socketId };
-  }
-});
-
-/**
- * Use it with socket.io
- */
 
 // connect to socket.io
 var socket = io.connect();
 
 // define collection
-var notes = new Notes([
+var cards = new Cards([
   { id: 1, name: 'create plugin for backbone' },
   { id: 2, name: 'with support of socket.io' },
   { id: 3, name: 'to sync data with server simpler' }
 ]);
 
-// create Backbone.Socket instance with 2 required options: collection and socket
-var notesSocket = new SocketManager({ collection: notes, socket: socket });
+// create Backbone.Socket instance for selected socket
+var socketManager = new Backbone.Socket(socket);
+socketManager.add(cards);
 
-// supports after:remove and after:remove:<collectionName>
-notesSocket.on('after-remove:notes', function(data) {
-  Backbone.trigger('sockets:note-remove', data.id, data.socket);
+// it triggers event after every sync event from socket
+// data has format: { id, socketId, t, json }
+// id - id of changed object
+// socketId - event initializer
+// t - time in miliseconds
+// json - object attributes
+
+socketManager.on('remove-cards', function(data) {
+  Backbone.trigger('sockets:card-removed', data.id, data.socket);
 });
 ```
-
-## Licence
-
-  Aleksey Kulikov, MIT
