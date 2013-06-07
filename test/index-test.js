@@ -29,7 +29,7 @@ describe('Backbone.Socket', function() {
     });
   }
 
-  before(function(done) {
+  beforeEach(function(done) {
     async.parallel([
       function(cb) { createUser('ivan', cb); },
       function(cb) { createUser('alex', cb); },
@@ -42,7 +42,7 @@ describe('Backbone.Socket', function() {
     });
   });
 
-  after(function() {
+  afterEach(function() {
     ivan.socket.disconnect();
     alex.socket.disconnect();
     dima.socket.disconnect();
@@ -59,7 +59,11 @@ describe('Backbone.Socket', function() {
 
   it('emits add event', function(done) {
     ivan.cards.add({ id: 4, name: 'test add', treeId: 1 });
-    var next = _.after(2, done.bind(null, null));
+    var next = _.after(2, function() {
+      expect(alex.cards).length(4);
+      expect(dima.cards).length(4);
+      done();
+    });
 
     alex.manager.on('add-cards', function(data) {
       expect(_.keys(data)).length(4);
@@ -84,8 +88,23 @@ describe('Backbone.Socket', function() {
     alex.trees.get(1).save({ name: 't1' });
     ivan.trees.get(2).save({ name: 't2' });
 
-    alex.manager.on('change-trees', next);
     ivan.manager.on('change-trees', next);
+    alex.manager.on('change-trees', next);
     dima.manager.on('change-trees', next);
+  });
+
+  it('emit remove event', function(done) {
+    var next = _.after(6, function() {
+      expect(dima.cards).length(0);
+      expect(ivan.cards).length(0);
+      done();
+    });
+
+    ivan.cards.remove(ivan.cards.get(1));
+    ivan.cards.remove(ivan.cards.get(2));
+    ivan.cards.remove(ivan.cards.get(3));
+
+    alex.manager.on('remove-cards', next);
+    dima.manager.on('remove-cards', next);
   });
 });
