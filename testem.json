@@ -10,6 +10,7 @@
     "components/socket.io-client/dist/socket.io.js",
     "components/async/lib/async.js",
     "components/es5-shim/es5-shim.js",
+    "components/sinon/index.js",
     "index.js",
     "test/index-test.js"
   ]

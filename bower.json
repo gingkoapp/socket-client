@@ -12,7 +12,8 @@
   },
   "devDependencies": {
     "chai": "~1.6.0",
-    "async": "~0.2.5"
+    "async": "~0.2.5",
+    "sinon": "http://sinonjs.org/releases/sinon-1.7.1.js"
   },
   "ignore": [
     "**/.*",

@@ -2,9 +2,11 @@ describe('Backbone.Socket', function() {
   'use strict';
 
   var expect = chai.expect;
-  var Cards  = Backbone.Collection.extend({ socket: 'cards' });
-  var Trees  = Backbone.Collection.extend({ socket: 'trees' });
+  var Cards  = Backbone.Collection.extend({ socket: 'cards', url: 'api/cards' });
+  var Trees  = Backbone.Collection.extend({ socket: 'trees', url: 'api/trees' });
   var ivan, alex, dima;
+
+  sinon.stub($, 'ajax');
 
   function createUser(name, cb) {
     var user = { name: name };
@@ -68,5 +70,22 @@ describe('Backbone.Socket', function() {
       next();
     });
     dima.manager.on('add-cards', next);
+  });
+
+  it('emits change event', function(done) {
+    var next = _.after(4, function() {
+      expect(dima.trees.get(1).get('name')).equal('t1');
+      expect(ivan.trees.get(1).get('name')).equal('t1');
+      expect(alex.trees.get(2).get('name')).equal('t2');
+      expect(alex.trees.get(2).get('name')).equal('t2');
+      done();
+    });
+
+    alex.trees.get(1).save({ name: 't1' });
+    ivan.trees.get(2).save({ name: 't2' });
+
+    alex.manager.on('change-trees', next);
+    ivan.manager.on('change-trees', next);
+    dima.manager.on('change-trees', next);
   });
 });
