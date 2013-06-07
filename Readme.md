@@ -36,3 +36,9 @@ socketManager.on('remove-cards', function(data) {
   Backbone.trigger('sockets:card-removed', data.id, data.socket);
 });
 ```
+
+## Development
+
+  * `npm install` - to install npm and bower dependencies
+  * `npm start` - to start watcher and socket server from test/server/index.js
+  * `npm test` - to run test in cli
