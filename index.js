@@ -31,8 +31,10 @@
         if (!options) options = collection; // for change event
         if (options.socket) return;
 
-        var json = model.toJSON();
-        json.t   = Date.now();
+        var json = _.extend(model.toJSON(), {
+          t: Date.now(), id: model.id, socketId: this.socket.socket.sessionid
+        });
+
         this.socket.emit(name, json);
       };
     },

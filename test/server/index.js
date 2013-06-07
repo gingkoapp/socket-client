@@ -1,4 +1,4 @@
-var io = require('socket.io').listen(7357);
+var io = require('socket.io').listen(7358);
 var _  = require('underscore');
 
 io.sockets.on('connection', function (socket) {
@@ -8,7 +8,7 @@ io.sockets.on('connection', function (socket) {
         id:       data.id,
         socketId: data.socketId,
         t:        data.t,
-        json:     _.omit(data, 'id', 'socketId', 't')
+        json:     _.omit(data, ['id', 'socketId', 't'])
       });
     });
   }
