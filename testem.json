@@ -2,15 +2,15 @@
   "framework": "mocha",
   "launch_in_ci": ["phantomjs"],
   "launch_in_dev": ["phantomjs"],
-  "before_tests": "node test/server/index.js > /dev/null",
-  "after_tests": "lsof -w -n -i tcp:7358",
   "src_files": [
     "components/jquery/jquery.js",
     "components/underscore/underscore.js",
     "components/backbone/backbone.js",
     "components/chai/chai.js",
     "components/socket.io-client/dist/socket.io.js",
-    "backbone-socket.js",
+    "components/async/lib/async.js",
+    "components/es5-shim/es5-shim.js",
+    "index.js",
     "test/index-test.js"
   ]
 }
