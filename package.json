@@ -1,9 +1,8 @@
 {
   "scripts": {
     "postinstall": "./node_modules/bower/bin/bower install",
-    "socket": "node test/server/index.js",
     "test": "./node_modules/testem/testem.js ci",
-    "start": "npm run socket && ./node_modules/testem/testem.js",
+    "start": "./node_modules/testem/testem.js",
     "stat": "cloc index.js --quiet && cloc test/ --quiet"
   },
   "devDependencies": {
