@@ -39,17 +39,17 @@
       };
     },
 
-    onAdd: function(collection, data) {
+    onadd: function(collection, data) {
       collection.add(data.json, { socket: true });
     },
 
-    onChange: function(collection, data) {
+    onchange: function(collection, data) {
       var model = collection.get(data.id);
       if (!model) return;
       model.set(data.json, { socket: true });
     },
 
-    onRemove: function(collection, data) {
+    onremove: function(collection, data) {
       var model = collection.get(data.id);
       if (!model) return;
       model.remove(data.json, { socket: true });

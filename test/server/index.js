@@ -4,19 +4,19 @@ var _  = require('underscore');
 io.sockets.on('connection', function (socket) {
   function broadcast(event) {
     socket.on(event, function (data) {
-      socket.broadcast(event, {
+      socket.broadcast.emit(event, {
         id:       data.id,
         socketId: data.socketId,
         t:        data.t,
-        json:     _.omit(data, ['id', 'socketId', 't'])
+        json:     _.omit(data, ['socketId', 't'])
       });
     });
   }
 
-  broadcats('add-card');
-  broadcats('change-card');
-  broadcats('remove-card');
-  broadcats('add-tree');
-  broadcats('change-tree');
-  broadcats('remove-tree');
+  broadcast('add-cards');
+  broadcast('change-cards');
+  broadcast('remove-cards');
+  broadcast('add-trees');
+  broadcast('change-trees');
+  broadcast('remove-trees');
 });
