@@ -2,8 +2,8 @@ describe('Backbone.Socket', function() {
   'use strict';
 
   var expect = chai.expect;
-  var Cards  = Backbone.Collection.extend({ socket: 'cards', url: 'api/cards' });
-  var Trees  = Backbone.Collection.extend({ socket: 'trees', url: 'api/trees' });
+  var Cards  = Backbone.Collection.extend({ socketName: 'cards', url: 'api/cards' });
+  var Trees  = Backbone.Collection.extend({ socketName: 'trees', url: 'api/trees' });
   var ivan, alex, dima;
 
   sinon.stub($, 'ajax');

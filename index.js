@@ -21,7 +21,7 @@
     },
 
     emitEvent: function(event, collection) {
-      var name = event + '-' + collection.socket;
+      var name = event + '-' + collection.socketName;
 
       this.socket.on(name, function(data) {
         this['on' + event].call(this, collection, data);
