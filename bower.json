@@ -1,6 +1,6 @@
 {
   "name": "backbone-socket",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sync Backbone.Collection instance with server through socket.io",
   "main": "index.js",
   "dependencies": {
@@ -17,8 +17,6 @@
   },
   "ignore": [
     "**/.*",
-    "node_modules",
-    "components",
     "test",
     "package.json",
     "testem.json"
