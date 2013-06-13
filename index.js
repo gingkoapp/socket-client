@@ -17,6 +17,7 @@
       collection.on('add', this.emitEvent('add', collection), this);
       collection.on('change', this.emitEvent('change', collection), this);
       collection.on('remove', this.emitEvent('remove', collection), this);
+      return this;
     },
 
     emitEvent: function(event, collection) {

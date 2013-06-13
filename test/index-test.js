@@ -22,9 +22,9 @@ describe('Backbone.Socket', function() {
     ]);
 
     user.socket.on('connect', function() {
-      user.manager = new Backbone.Socket(user.socket);
-      user.manager.add(user.cards);
-      user.manager.add(user.trees);
+      user.manager = new Backbone.Socket(user.socket)
+        .add(user.cards)
+        .add(user.trees);
       cb(null, user);
     });
   }
