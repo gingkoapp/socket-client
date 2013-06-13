@@ -30,7 +30,7 @@
 
       return function(model, collection, options) {
         if (!options) options = collection; // for change event
-        if (options.socket) return;
+        if (options.socketId) return;
 
         var json = _.extend(model.toJSON(), {
           t: Date.now(), id: model.id, socketId: this.socket.socket.sessionid
@@ -41,19 +41,19 @@
     },
 
     onadd: function(collection, data) {
-      collection.add(data.json, { socket: true });
+      collection.add(data.json, { socketId: data.socketId });
     },
 
     onchange: function(collection, data) {
       var model = collection.get(data.id);
       if (!model) return;
-      model.set(data.json, { socket: true });
+      model.set(data.json, { socketId: data.socketId });
     },
 
     onremove: function(collection, data) {
       var model = collection.get(data.id);
       if (!model) return;
-      collection.remove(data.json, { socket: true });
+      collection.remove(data.json, { socketId: data.socketId });
     }
   });
 

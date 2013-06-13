@@ -49,7 +49,7 @@ describe('Backbone.Socket', function() {
   });
 
   it('ignores events with socket: true', function(done) {
-    ivan.cards.remove(ivan.cards.get(1), { socket: true });
+    ivan.cards.remove(ivan.cards.get(1), { socketId: ivan.socket.socket.sessionid });
 
     alex.manager.on('remove-cards', done);
     dima.manager.on('remove-cards', done);
