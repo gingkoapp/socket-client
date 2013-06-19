@@ -5,6 +5,10 @@
   * ~ control time
   * ~ handle disconnects
 
+### 0.1.2 / 2013-06-19
+
+  * Fixed `onremove` bug
+
 ### 0.1.1 / 2013-06-13
 
   * use collection.socketName instead of collection.socket
