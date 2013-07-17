@@ -1,6 +1,3 @@
-// Sync Backbone.Collection with Socket.io
-// https://github.com/gingko-io/backbone-socket
-
 ;(function(Backbone, _) {
   'use strict';
 

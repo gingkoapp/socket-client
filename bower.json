@@ -1,24 +1,23 @@
 {
   "name": "backbone-socket",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Sync Backbone.Collection instance with server through socket.io",
   "main": "index.js",
   "dependencies": {
-    "jquery": "~1.10.0",
+    "jquery": "~1.10.2",
     "backbone": "~1.0.0",
-    "underscore": "~1.4.4",
+    "underscore": "~1.5.1",
     "socket.io-client": "~0.9.16",
     "es5-shim": "~2.1.0"
   },
   "devDependencies": {
-    "chai": "~1.6.0",
+    "chai": "~1.6.1",
     "async": "~0.2.5",
     "sinon": "http://sinonjs.org/releases/sinon-1.7.1.js"
   },
   "ignore": [
     "**/.*",
     "test",
-    "package.json",
-    "testem.json"
+    "package.json"
   ]
 }

@@ -1,14 +1,14 @@
 {
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install",
-    "test": "./test/server/start && ./node_modules/testem/testem.js ci && ./test/server/stop",
-    "start": "./test/server/start && ./node_modules/testem/testem.js && ./test/server/stop",
+    "postinstall": "./node_modules/bower/bin/bower install --quiet",
+    "test": "./test/server/start && ./node_modules/testem/testem.js -f test/testem.json ci && ./test/server/stop",
+    "start": "./test/server/start && ./node_modules/testem/testem.js -f test/testem.json && ./test/server/stop",
     "stat": "cloc index.js --quiet && cloc test/ --quiet"
   },
   "devDependencies": {
-    "testem": "~0.2.96",
-    "bower": "~0.9.2",
+    "testem": "~0.3.17",
+    "bower": "~0.10.0",
     "socket.io": "~0.9.16",
-    "underscore": "~1.4.4"
+    "underscore": "~1.5.1"
   }
 }

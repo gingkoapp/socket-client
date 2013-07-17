@@ -1,9 +1,8 @@
 ## 0.2.0 / 2013-..-..
 
-  * ~ migrate tests to casper
-  * ~ add `remove` method
-  * ~ control time
-  * ~ handle disconnects
+  * update deps: bower, testem, underscore
+  * ~ work close to porchetta-client
+  * ~ handle disconnects and viewers
 
 ### 0.1.2 / 2013-06-19
 
