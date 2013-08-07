@@ -3,14 +3,14 @@
   "launch_in_ci": ["phantomjs"],
   "launch_in_dev": ["phantomjs"],
   "src_files": [
-    "components/jquery/jquery.js",
-    "components/underscore/underscore.js",
-    "components/backbone/backbone.js",
-    "components/chai/chai.js",
-    "components/socket.io-client/dist/socket.io.js",
-    "components/async/lib/async.js",
-    "components/es5-shim/es5-shim.js",
-    "components/sinon/index.js",
+    "bower_components/jquery/jquery.js",
+    "bower_components/underscore/underscore.js",
+    "bower_components/backbone/backbone.js",
+    "bower_components/chai/chai.js",
+    "bower_components/socket.io-client/dist/socket.io.js",
+    "bower_components/async/lib/async.js",
+    "bower_components/es5-shim/es5-shim.js",
+    "bower_components/sinon/index.js",
     "index.js",
     "test/index-test.js"
   ]
