@@ -1,0 +1,4 @@
+#!/bin/bash
+if [[ ! $(lsof -n -i:7358) ]]; then
+  nohup node test/support/server.js > /dev/null &
+fi

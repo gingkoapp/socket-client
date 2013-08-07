@@ -1,2 +1,2 @@
-#!/bin/sh
+#!/bin/bash
 lsof -n -i:7358 | grep LISTEN | awk '{ print $2 }' | uniq | xargs kill -9
