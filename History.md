@@ -1,3 +1,7 @@
+### 0.2.1 /2013-09-05
+
+  * added support of content validators
+
 ## 0.2.0 /2013-09-05
 
   * full rewrite

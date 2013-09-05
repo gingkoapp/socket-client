@@ -12,6 +12,7 @@ var Socket = Backbone.Socket = function(options) {
   this.active = false;
   this.treeId = null;
   this.collections = {};
+  this.validators  = {}
 
   // listen `sync` event
   this.subscribe('sync', this.onsync);
@@ -51,11 +52,13 @@ Socket.prototype.emit = function(event, json) {
 };
 
 // Sync `collection` in the room.
-Socket.prototype.add = function(collection, name) {
+Socket.prototype.add = function(collection, name, validator) {
   if (!name || this.collections[name])
     throw new TypeError('Collection has to have unique name or already added');
 
+  this.validators[name]  = validator;
   this.collections[name] = collection;
+
   collection.on('add',    this.handleEvent('add',    name), this);
   collection.on('change', this.handleEvent('change', name), this);
   collection.on('remove', this.handleEvent('remove', name), this);
@@ -85,8 +88,11 @@ Socket.prototype.onsync = function(data) {
 
   // handle collection's event
   var collection = this.collections[data.name], model;
+  var validator  = this.validators[data.name];
   var json       = _.extend(data.json, { socketId: data.socketId });
 
+  // validate json to prevent alient content on socket.io bugs
+  if (validator && !validator(data.json)) return;
   switch (data.event) {
     case 'add':
       collection.add(data.json, { socketId: data.socketId });

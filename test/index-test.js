@@ -25,11 +25,16 @@ describe('Backbone.Socket', function() {
     ]);
 
     user.socket = new Backbone.Socket({ 'force new connection': true, url: 'http://localhost:7358' })
-      .add(user.cards, 'cards')
+      .add(user.cards, 'cards', validateCard)
       .add(user.trees, 'trees');
 
     user.socket.join(1);
     user.socket.once('viewers', function() { cb(null, user) });
+  }
+
+  // dummy validator
+  function validateCard(json) {
+    return json.treeId === 1 || json.treeId === 2;
   }
 
   beforeEach(function(done) {
@@ -109,5 +114,14 @@ describe('Backbone.Socket', function() {
 
     alex.socket.on('cards:remove', next);
     dima.socket.on('cards:remove', next);
+  });
+
+  it('uses validator to prevent alient content', function(done) {
+    alex.cards.get(1).save({ treeId: 3 });
+
+    ivan.socket.on('cards:change', done);
+    dima.socket.on('cards:change', done);
+
+    _.delay(done, 100);
   });
 });
