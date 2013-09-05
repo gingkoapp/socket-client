@@ -1,8 +1,3 @@
-## 0.2.0 / 2013-..-..
-
-  * ~ work close to porchetta-client
-  * ~ handle disconnects and viewers
-
 ### 0.1.3 / 2013-08-07
 
   * update deps: bower, testem, underscore

@@ -1,9 +1,9 @@
 {
   "scripts": {
     "postinstall": "bower install --quiet",
-    "start": "./script/start-test-server && testem -f test/testem.json && ./script/stop-test-server",
-    "stat": "cloc index.js --quiet && cloc test/ --quiet",
-    "test": "./script/start-test-server && testem -f test/testem.json ci && ./script/stop-test-server"
+    "start": "./script/start && testem -f test/testem.json && ./script/stop",
+    "stat": "cloc index.js --quiet --by-file && cloc test/ --quiet --by-file --exclude-dir=support",
+    "test": "./script/start && testem -f test/testem.json ci && ./script/stop"
   },
   "devDependencies": {
     "testem": "~0.3.x",
