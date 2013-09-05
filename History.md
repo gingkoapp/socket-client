@@ -1,3 +1,9 @@
+## 0.2.0 /2013-09-05
+
+  * full rewrite
+  * add this.active to ingore events when viewers <= 1
+  * client for socket-server
+
 ### 0.1.3 / 2013-08-07
 
   * update deps: bower, testem, underscore

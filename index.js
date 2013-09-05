@@ -1,12 +1,14 @@
-/* globals Backbone, _, io */
-;(function(Backbone, _, io) {
+/* globals Backbone, _ */
+;(function(Backbone, _) {
 'use strict';
 
 // reserved type of sync events
 var RESERVED = ['add', 'change', 'remove'];
 
 var Socket = Backbone.Socket = function(options) {
-  this.socket = io.connect(options.url || '/', options);
+  if (!options) options = {};
+
+  this.socket = window.io.connect(options.url || '/', options);
   this.active = false;
   this.treeId = null;
   this.collections = {};
@@ -45,7 +47,7 @@ Socket.prototype.emit = function(event, json) {
 
   json.event    = event;
   json.socketId = this.socketId();
-  this.socket.emit(event, json);
+  this.socket.emit('sync', json);
 };
 
 // Sync `collection` in the room.
@@ -91,12 +93,12 @@ Socket.prototype.onsync = function(data) {
       break;
 
     case 'change':
-      model = collection.get(data.json.id);
+      model = collection.get(data.json._id);
       if (model) model.set(data.json, { socketId: data.socketId });
       break;
 
     case 'remove':
-      model = collection.get(data.json.id);
+      model = collection.get(data.json._id);
       if (model) collection.remove(model, { socketId: data.socketId });
       break;
   }
@@ -114,4 +116,4 @@ Socket.prototype.socketId = function() {
   return this.socket.socket.sessionid;
 };
 
-}).call(this, Backbone, _, io);
+}).call(this, Backbone, _);

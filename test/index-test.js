@@ -7,20 +7,21 @@ describe('Backbone.Socket', function() {
   var Trees  = Backbone.Collection.extend({ socketName: 'trees', url: 'api/trees' });
   var ivan, alex, dima;
 
+  Backbone.Model.prototype.idAttribute = '_id';
   sinon.stub($, 'ajax');
 
   function createUser(name, cb) {
     var user = { name: name };
 
     user.cards = new Cards([
-      { id: 1, name: 'create plugin for backbone', treeId: 1 },
-      { id: 2, name: 'with support of socket.io', treeId: 1 },
-      { id: 3, name: 'to sync data with server simpler', treeId: 2 }
+      { _id: 1, name: 'create plugin for backbone', treeId: 1 },
+      { _id: 2, name: 'with support of socket.io', treeId: 1 },
+      { _id: 3, name: 'to sync data with server simpler', treeId: 2 }
     ]);
 
     user.trees = new Trees([
-      { id: 1, name: 'Tree 1' },
-      { id: 2, name: 'Tree 2' }
+      { _id: 1, name: 'Tree 1' },
+      { _id: 2, name: 'Tree 2' }
     ]);
 
     user.socket = new Backbone.Socket({ 'force new connection': true, url: 'http://localhost:7358' })
@@ -60,7 +61,7 @@ describe('Backbone.Socket', function() {
   });
 
   it('emits add event', function(done) {
-    ivan.cards.add({ id: 4, name: 'test add', treeId: 1 });
+    ivan.cards.add({ _id: 4, name: 'test add', treeId: 1 });
 
     var next = _.after(2, function() {
       expect(alex.cards).length(4);
@@ -70,7 +71,7 @@ describe('Backbone.Socket', function() {
 
     alex.socket.on('cards:add', function(data) {
       expect(_.keys(data)).length(4);
-      expect(data.id).equal(4);
+      expect(data._id).equal(4);
       expect(data.socketId).equal(ivan.socket.socketId());
       next();
     });
@@ -82,7 +83,7 @@ describe('Backbone.Socket', function() {
     var next = _.after(4, function() {
       expect(dima.trees.get(1).get('name')).equal('t1');
       expect(ivan.trees.get(1).get('name')).equal('t1');
-      expect(alex.trees.get(2).get('name')).equal('t2');
+      expect(dima.trees.get(2).get('name')).equal('t2');
       expect(alex.trees.get(2).get('name')).equal('t2');
       done();
     });
