@@ -23,9 +23,9 @@ describe('Backbone.Socket', function() {
       { id: 2, name: 'Tree 2' }
     ]);
 
-    user.socket = new Backbone.Socket({ 'force new connection': true })
-      .add(user.cards)
-      .add(user.trees);
+    user.socket = new Backbone.Socket({ 'force new connection': true, url: 'http://localhost:7358' })
+      .add(user.cards, 'cards')
+      .add(user.trees, 'trees');
 
     user.socket.join(1);
     user.socket.once('viewers', function() { cb(null, user) });
@@ -50,7 +50,7 @@ describe('Backbone.Socket', function() {
     dima.socket.socket.disconnect();
   });
 
-  it('ignores events with socket: true', function(done) {
+  it('ignores events with socketId: true', function(done) {
     ivan.cards.remove(ivan.cards.get(1), { socketId: ivan.socket.socketId() });
 
     alex.socket.on('remove-cards', done);
@@ -68,15 +68,14 @@ describe('Backbone.Socket', function() {
       done();
     });
 
-    alex.socket.on('add-cards', function(data) {
+    alex.socket.on('cards:add', function(data) {
       expect(_.keys(data)).length(4);
       expect(data.id).equal(4);
       expect(data.socketId).equal(ivan.socket.socketId());
-      expect(_.keys(data.json)).length(3);
       next();
     });
 
-    dima.socket.on('add-cards', next);
+    dima.socket.on('cards:add', next);
   });
 
   it('emits change event', function(done) {
@@ -91,9 +90,9 @@ describe('Backbone.Socket', function() {
     alex.trees.get(1).save({ name: 't1' });
     ivan.trees.get(2).save({ name: 't2' });
 
-    ivan.socket.on('change-trees', next);
-    alex.socket.on('change-trees', next);
-    dima.socket.on('change-trees', next);
+    ivan.socket.on('trees:change', next);
+    alex.socket.on('trees:change', next);
+    dima.socket.on('trees:change', next);
   });
 
   it('emit remove event', function(done) {
@@ -107,7 +106,7 @@ describe('Backbone.Socket', function() {
     ivan.cards.remove(ivan.cards.get(2));
     ivan.cards.remove(ivan.cards.get(3));
 
-    alex.socket.on('remove-cards', next);
-    dima.socket.on('remove-cards', next);
+    alex.socket.on('cards:remove', next);
+    dima.socket.on('cards:remove', next);
   });
 });

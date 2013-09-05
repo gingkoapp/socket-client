@@ -6,7 +6,7 @@
 var RESERVED = ['add', 'change', 'remove'];
 
 var Socket = Backbone.Socket = function(options) {
-  this.socket = io.connect('/', options);
+  this.socket = io.connect(options.url || '/', options);
   this.active = false;
   this.treeId = null;
   this.collections = {};
@@ -83,6 +83,7 @@ Socket.prototype.onsync = function(data) {
 
   // handle collection's event
   var collection = this.collections[data.name], model;
+  var json       = _.extend(data.json, { socketId: data.socketId });
 
   switch (data.event) {
     case 'add':
@@ -100,7 +101,7 @@ Socket.prototype.onsync = function(data) {
       break;
   }
 
-  this.trigger(data.name + ':' + data.event, data.json);
+  this.trigger(data.name + ':' + data.event, json);
 };
 
 // internal method to subscribe on socket.io events

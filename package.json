@@ -8,7 +8,6 @@
   "devDependencies": {
     "testem": "~0.3.x",
     "bower": "~1.0.x",
-    "socket.io": "~0.9.16",
-    "underscore": "~1.5.x"
+    "socket-server": "git://github.com/ask11/socket-server~0.1.0"
   }
 }
