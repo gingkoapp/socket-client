@@ -1,16 +1,16 @@
-window.$ = require('jquery');
-
-describe('Backbone.Socket', function() {
+require('functionbind');
+describe('socket-client', function() {
   var expect   = require('chai').expect;
   var async    = require('async');
   var _        = require('underscore');
   var Backbone = require('backbone');
+  var Socket   = require('socket-client');
   var Cards    = Backbone.Collection.extend({ socketName: 'cards', url: 'api/cards' });
   var Trees    = Backbone.Collection.extend({ socketName: 'trees', url: 'api/trees' });
   var ivan, alex, dima;
 
   Backbone.Model.prototype.idAttribute = '_id';
-  Backbone.$.ajax = function() {}; // stub ajax calls
+  Backbone.sync = function() {}; // stub ajax calls
 
   function createUser(name, cb) {
     var user = { name: name };
@@ -26,7 +26,7 @@ describe('Backbone.Socket', function() {
       { _id: 2, name: 'Tree 2' }
     ]);
 
-    user.socket = new Backbone.Socket({ 'force new connection': true, url: 'http://localhost:7358' })
+    user.socket = new Socket({ 'force new connection': true, url: 'http://localhost:7358' })
       .add(user.cards, 'cards', validateCard)
       .add(user.trees, 'trees');
 

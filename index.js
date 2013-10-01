@@ -1,6 +1,6 @@
 var Backbone = require('backbone');
-var _        = require('underscore');
-var io       = require('socket.io-client');
+var extend   = require('extend');
+var io       = require('./vendor/socket.io-client.min');
 var RESERVED = ['add', 'change', 'remove']; // reserved type of sync events
 
 // Expose `Socket`
@@ -30,7 +30,7 @@ function Socket(options) {
   });
 }
 
-_.extend(Socket.prototype, Backbone.Events);
+extend(Socket.prototype, Backbone.Events);
 
 // Convinient method to change current room.
 // It changes room after socket connected.
@@ -39,7 +39,7 @@ Socket.prototype.join = function(treeId) {
   if (this.socket.socket.connected)
     this.socket.emit('tree', treeId);
   else
-    _.delay(this.join.bind(this, treeId), 50);
+    setTimeout(this.join.bind(this, treeId), 50);
 };
 
 // Emit specific event
@@ -90,7 +90,7 @@ Socket.prototype.onsync = function(data) {
   // handle collection's event
   var collection = this.collections[data.name], model;
   var validator  = this.validators[data.name];
-  var json       = _.extend(data.json, { socketId: data.socketId });
+  var json       = extend(data.json, { socketId: data.socketId });
 
   // validate json to prevent alient content on socket.io bugs
   if (validator && !validator(data.json)) return;

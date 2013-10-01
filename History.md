@@ -1,6 +1,7 @@
 ## 0.3.0 / 2013-09-30
 
   * it's a component now
+  * encapsulate socket.io-client
 
 ### 0.2.1 /2013-09-05
 

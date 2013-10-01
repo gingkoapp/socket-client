@@ -4,17 +4,24 @@
   "description": "Sync Backbone.Collection instance with server through socket.io",
   "main": "index.js",
   "dependencies": {
-    "components/jquery": "*",
     "components/backbone": "*",
     "segmentio/extend": "*"
   },
   "development": {
+    "components/jquery": "*",
+    "components/underscore": "*",
     "caolan/async": "*",
-    "chaijs/chai": "*"
+    "chaijs/chai": "*",
+    "enyo/functionbind": "*"
   },
   "scripts": [
     "index.js",
     "vendor/socket.io-client.min.js"
   ],
+  "hooks": {
+    "before-test": "./script/start",
+    "after-test": "./script/stop",
+    "after-install": "npm install git+ssh://git@github.com/gingkoapp/socket-server.git#0.1.0"
+  },
   "remotes": []
 }
