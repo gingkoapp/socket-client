@@ -6,13 +6,15 @@
   "dependencies": {
     "components/jquery": "*",
     "components/backbone": "*",
-    "components/underscore": "*",
-    "LearnBoost/socket.io-client": "*"
+    "segmentio/extend": "*"
   },
   "development": {
     "caolan/async": "*",
     "chaijs/chai": "*"
   },
-  "before-test": "./script/start",
-  "after-test": "./script/stop"
+  "scripts": [
+    "index.js",
+    "vendor/socket.io-client.min.js"
+  ],
+  "remotes": []
 }
