@@ -1,14 +1,16 @@
-/* globals Backbone, _, sinon, $, chai, async */
-describe('Backbone.Socket', function() {
-  'use strict';
+window.$ = require('jquery');
 
-  var expect = chai.expect;
-  var Cards  = Backbone.Collection.extend({ socketName: 'cards', url: 'api/cards' });
-  var Trees  = Backbone.Collection.extend({ socketName: 'trees', url: 'api/trees' });
+describe('Backbone.Socket', function() {
+  var expect   = require('chai').expect;
+  var async    = require('async');
+  var _        = require('underscore');
+  var Backbone = require('backbone');
+  var Cards    = Backbone.Collection.extend({ socketName: 'cards', url: 'api/cards' });
+  var Trees    = Backbone.Collection.extend({ socketName: 'trees', url: 'api/trees' });
   var ivan, alex, dima;
 
   Backbone.Model.prototype.idAttribute = '_id';
-  sinon.stub($, 'ajax');
+  Backbone.$.ajax = function() {}; // stub ajax calls
 
   function createUser(name, cb) {
     var user = { name: name };

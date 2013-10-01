@@ -1,18 +1,19 @@
-/* globals Backbone, _ */
-;(function(Backbone, _) {
-'use strict';
+var Backbone = require('backbone');
+var _        = require('underscore');
+var io       = require('socket.io-client');
+var RESERVED = ['add', 'change', 'remove']; // reserved type of sync events
 
-// reserved type of sync events
-var RESERVED = ['add', 'change', 'remove'];
+// Expose `Socket`
+module.exports = Socket;
 
-var Socket = Backbone.Socket = function(options) {
+function Socket(options) {
   if (!options) options = {};
 
-  this.socket = window.io.connect(options.url || '/', options);
+  this.socket = io.connect(options.url || '/', options);
   this.active = false;
   this.treeId = null;
   this.collections = {};
-  this.validators  = {}
+  this.validators  = {};
 
   // listen `sync` event
   this.subscribe('sync', this.onsync);
@@ -27,7 +28,7 @@ var Socket = Backbone.Socket = function(options) {
   this.subscribe('reconnect', function() {
     this.join(this.treeId);
   });
-};
+}
 
 _.extend(Socket.prototype, Backbone.Events);
 
@@ -121,5 +122,3 @@ Socket.prototype.subscribe = function(event, cb) {
 Socket.prototype.socketId = function() {
   return this.socket.socket.sessionid;
 };
-
-}).call(this, Backbone, _);

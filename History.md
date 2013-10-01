@@ -1,3 +1,7 @@
+## 0.3.0 / 2013-09-30
+
+  * it's a component now
+
 ### 0.2.1 /2013-09-05
 
   * added support of content validators

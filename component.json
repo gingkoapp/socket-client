@@ -1,0 +1,18 @@
+{
+  "name": "socket-client",
+  "version": "0.3.0",
+  "description": "Sync Backbone.Collection instance with server through socket.io",
+  "main": "index.js",
+  "dependencies": {
+    "components/jquery": "*",
+    "components/backbone": "*",
+    "components/underscore": "*",
+    "LearnBoost/socket.io-client": "*"
+  },
+  "development": {
+    "caolan/async": "*",
+    "chaijs/chai": "*"
+  },
+  "before-test": "./script/start",
+  "after-test": "./script/stop"
+}
