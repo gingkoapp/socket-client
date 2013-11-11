@@ -4,12 +4,12 @@
   "description": "Sync Backbone.Collection instance with server through socket.io",
   "main": "index.js",
   "dependencies": {
-    "components/backbone": "*",
+    "jashkenas/backbone": "*",
     "segmentio/extend": "*"
   },
   "development": {
     "components/jquery": "*",
-    "components/underscore": "*",
+    "jashkenas/underscore": "*",
     "caolan/async": "*",
     "chaijs/chai": "*",
     "enyo/functionbind": "*"
