@@ -1,3 +1,8 @@
+### 0.3.1 / 2014-04-08
+
+  * reorganization
+  * upgrade to component@1.0
+
 ## 0.3.0 / 2013-09-30
 
   * it's a component now
