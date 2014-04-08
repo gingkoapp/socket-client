@@ -1,6 +1,6 @@
 {
   "name": "socket-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "repository": "gingkoapp/socket-client",
   "description": "Sync Backbone.Collection instance with server through socket.io",
   "main": "index.js",
