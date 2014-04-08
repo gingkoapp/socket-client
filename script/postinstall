@@ -1,0 +1,3 @@
+#!/bin/bash
+npm link ../socket-server
+npm link ../component-testem

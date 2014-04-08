@@ -39,8 +39,7 @@ socketManager.on('remove-cards', function(data) {
 
 ## Development
 
-  * `component install --dev && npm install git+ssh://git@github.com/gingkoapp/socket-server.git`
-  * `./script/start && component test -s` - to start watcher and socket server from test/server/index.js
+  * `./script/postinstall && component install --dev`
+  * `./script/start` - to start watcher and socket server from test/server/index.js
+  * `component testem -s`
   * `./script/stop` - to stop server
-
-This workflow has to be improved with hooks idea.
