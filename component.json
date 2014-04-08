@@ -1,27 +1,27 @@
 {
   "name": "socket-client",
   "version": "0.3.0",
+  "repository": "gingkoapp/socket-client",
   "description": "Sync Backbone.Collection instance with server through socket.io",
   "main": "index.js",
   "dependencies": {
-    "jashkenas/backbone": "*",
-    "segmentio/extend": "*"
+    "jashkenas/backbone": "1.1.2",
+    "segmentio/extend": "1.0.0"
   },
   "development": {
-    "components/jquery": "*",
-    "jashkenas/underscore": "*",
-    "caolan/async": "*",
-    "chaijs/chai": "*",
-    "enyo/functionbind": "*"
+    "dependencies": {
+      "components/jquery": "*",
+      "jashkenas/underscore": "*",
+      "caolan/async": "*",
+      "chaijs/chai": "*",
+      "enyo/functionbind": "*"
+    },
+    "scripts": [
+      "test.js"
+    ]
   },
   "scripts": [
     "index.js",
     "vendor/socket.io-client.min.js"
-  ],
-  "hooks": {
-    "before-test": "./script/start",
-    "after-test": "./script/stop",
-    "after-install": "npm install git+ssh://git@github.com/gingkoapp/socket-server.git#0.1.0"
-  },
-  "remotes": []
+  ]
 }

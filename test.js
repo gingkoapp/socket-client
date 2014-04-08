@@ -1,10 +1,11 @@
 require('functionbind');
+var expect   = require('chai').expect;
+var async    = require('async');
+var _        = require('underscore');
+var Backbone = require('backbone');
+var Socket   = require('socket-client');
+
 describe('socket-client', function() {
-  var expect   = require('chai').expect;
-  var async    = require('async');
-  var _        = require('underscore');
-  var Backbone = require('backbone');
-  var Socket   = require('socket-client');
   var Cards    = Backbone.Collection.extend({ socketName: 'cards', url: 'api/cards' });
   var Trees    = Backbone.Collection.extend({ socketName: 'trees', url: 'api/trees' });
   var ivan, alex, dima;
