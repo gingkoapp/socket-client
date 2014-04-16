@@ -1,13 +1,14 @@
 require('functionbind');
-var expect   = require('chai').expect;
-var async    = require('async');
-var _        = require('underscore');
+
+var expect = require('chai').expect;
+var async = require('async');
 var Backbone = require('backbone');
-var Socket   = require('socket-client');
+var _ = require('underscore');
+var Socket = require('./index');
 
 describe('socket-client', function() {
-  var Cards    = Backbone.Collection.extend({ socketName: 'cards', url: 'api/cards' });
-  var Trees    = Backbone.Collection.extend({ socketName: 'trees', url: 'api/trees' });
+  var Cards = Backbone.Collection.extend({ url: 'api/cards' });
+  var Trees = Backbone.Collection.extend({ url: 'api/trees' });
   var ivan, alex, dima;
 
   Backbone.Model.prototype.idAttribute = '_id';
@@ -31,13 +32,17 @@ describe('socket-client', function() {
       .add(user.cards, 'cards', validateCard)
       .add(user.trees, 'trees');
 
-    user.socket.join(1);
+    user.socket.join([1]);
     user.socket.once('viewers', function() { cb(null, user) });
   }
 
   // dummy validator
   function validateCard(json) {
     return json.treeId === 1 || json.treeId === 2;
+  }
+
+  function timeout(done) {
+    _.delay(done, 20);
   }
 
   beforeEach(function(done) {
@@ -65,7 +70,7 @@ describe('socket-client', function() {
     alex.socket.on('remove-cards', done);
     dima.socket.on('remove-cards', done);
 
-    _.delay(done, 100);
+    timeout(done);
   });
 
   it('emits add event', function(done) {
@@ -125,6 +130,25 @@ describe('socket-client', function() {
     ivan.socket.on('cards:change', done);
     dima.socket.on('cards:change', done);
 
-    _.delay(done, 100);
+    timeout(done);
+  });
+
+  it('supports multiply trees', function(done) {
+    dima.socket.join([2, 1]);
+    dima.socket.on('viewers', function(viewers) {
+      viewers.length > 1
+        ? expect(viewers).length(3)
+        : expect(viewers).length(1);
+      next();
+    });
+
+    var next = _.after(2, function() {
+      dima.cards.get(3).save({ name: 'modified tree' });
+
+      alex.socket.on('trees:change', done);
+      ivan.socket.on('trees:change', done);
+
+      timeout(done);
+    });
   });
 });
