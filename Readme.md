@@ -1,18 +1,12 @@
 # Backbone.Socket
 
-  Sync Backbone.Collection instance with server through socket.io.
+  Sync Backbone.Collection instance with server through socket-server.
 
 ## Example
 
 ```js
 // Define collection and Backbone.Socket instance
-var Cards = Backbone.Collection.extend({
-  // required option to specify namespace for socket.io events
-  socket: 'cards' // add-cards, change-cards, remove-cards
-});
-
-// connect to socket.io
-var socket = io.connect();
+var Cards = Backbone.Collection.extend({});
 
 // define collection
 var cards = new Cards([
@@ -22,8 +16,8 @@ var cards = new Cards([
 ]);
 
 // create Backbone.Socket instance for selected socket
-var socketManager = new Backbone.Socket(socket);
-socketManager.add(cards);
+var socketManager = new Backbone.Socket();
+socketManager.add(cards, 'cards');
 
 // it triggers event after every sync event from socket
 // data has format: { id, socketId, t, json }
