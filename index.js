@@ -1,99 +1,137 @@
 var Backbone = require('backbone');
-var extend   = require('extend');
-var io       = require('./vendor/socket.io-client.min');
-var RESERVED = ['add', 'change', 'remove']; // reserved type of sync events
+var _ = require('underscore');
+var io = require('./vendor/socket.io-client.min');
 
-// Expose `Socket`
+/**
+ * Reserved sync events.
+ */
+
+var RESERVED = ['add', 'change', 'remove'];
+
+/**
+ * Expose `Socket`.
+ */
+
 module.exports = Socket;
 
-function Socket(options) {
-  if (!options) options = {};
+/**
+ * Initialize new `Socket` with socket.io-client `ops`.
+ *
+ * @param {Object} ops
+ */
 
-  this.socket = io.connect(options.url || '/', options);
+function Socket(ops) {
+  if (!ops) ops = {};
+  var that = this;
+
+  this.socket = io.connect(ops.url || '/', ops);
   this.active = false;
-  this.treeId = null;
+  this.trees = [];
   this.collections = {};
-  this.validators  = {};
+  this.validators = {};
 
   // listen `sync` event
-  this.subscribe('sync', this.onsync);
+  this.socket.on('sync', this.onsync.bind(this));
 
   // emit viewers
-  this.subscribe('viewers', function(viewers) {
-    this.active = viewers.length > 1;
-    this.trigger('viewers', viewers);
+  this.socket.on('viewers', function(viewers) {
+    that.active = viewers.length > 1;
+    that.trigger('viewers', viewers);
   });
 
   // join current room on reconect
-  this.subscribe('reconnect', function() {
-    this.join(this.treeId);
+  this.socket.on('reconnect', function() {
+    that.join(that.trees);
   });
 }
 
-extend(Socket.prototype, Backbone.Events);
+/**
+ * Mixins.
+ */
 
-// Convinient method to change current room.
-// It changes room after socket connected.
-Socket.prototype.join = function(treeId) {
-  this.treeId = treeId;
-  if (this.socket.socket.connected)
-    this.socket.emit('tree', treeId);
-  else
-    setTimeout(this.join.bind(this, treeId), 50);
+_.extend(Socket.prototype, Backbone.Events);
+
+/**
+ * Convinient method to change current room.
+ * It changes room after socket connected.
+ *
+ * @param {Array} trees
+ */
+
+Socket.prototype.join = function(trees) {
+  this.trees = trees;
+  if (this.socket.socket.connected) {
+    this.socket.emit('subscribe', trees);
+  } else {
+    setTimeout(this.join.bind(this, trees), 50);
+  }
 };
 
-// Emit specific event
+/**
+ * Emit specific event.
+ *
+ * @param {String} event
+ * @param {Object} json (also add event and socketId)
+ */
+
 Socket.prototype.emit = function(event, json) {
   if (!this.active) return;
-  if (~RESERVED.indexOf(event)) throw new Error(event + ' is reserved event');
-
-  json.event    = event;
+  json.event = event;
   json.socketId = this.socketId();
   this.socket.emit('sync', json);
 };
 
-// Sync `collection` in the room.
+/**
+ * Sync `collection` in the room.
+ *
+ * @param {Backbone.Collection} collection
+ * @param {String} name
+ * @param {Function} [validator]
+ * @return {Socket}
+ */
+
 Socket.prototype.add = function(collection, name, validator) {
   if (!name || this.collections[name])
     throw new TypeError('Collection has to have unique name or already added');
 
-  this.validators[name]  = validator;
+  this.validators[name] = validator;
   this.collections[name] = collection;
 
-  collection.on('add',    this.handleEvent('add',    name), this);
-  collection.on('change', this.handleEvent('change', name), this);
-  collection.on('remove', this.handleEvent('remove', name), this);
+  collection.on('add', eventHandler('add', name), this);
+  collection.on('change', eventHandler('change', name), this);
+  collection.on('remove', eventHandler('remove', name), this);
 
   return this;
+
+  function eventHandler(event, name) {
+    return function(model, collection, options) {
+      if (!this.active) return; // return if only one viewer
+      if (!options) options = collection; // for change event
+      if (options && options.socketId) return; // prevent updates after sync
+
+      this.emit(event, { name: name, json: model.toJSON() });
+    };
+  }
 };
 
-// Helper, which helps to manage changes of collection.
-Socket.prototype.handleEvent = function(event, name) {
-  return function(model, collection, options) {
-    if (!this.active) return; // return if only one viewer
-    if (!options) options = collection; // for change event
-    if (options && options.socketId) return; // prevent updates after sync
+/**
+ * Handles `sync` event to update collection based on received data.
+ *
+ * @param {Object} data
+ */
 
-    this.socket.emit('sync', {
-      name: name,
-      event: event,
-      socketId: this.socketId(),
-      json: model.toJSON()
-    });
-  };
-};
-
-// Handles `sync` event to update collection based on received data.
 Socket.prototype.onsync = function(data) {
+  // ignore events except reserved
   if (!~RESERVED.indexOf(data.event)) return this.trigger(data.event, data);
 
   // handle collection's event
   var collection = this.collections[data.name], model;
   var validator  = this.validators[data.name];
-  var json       = extend(data.json, { socketId: data.socketId });
+  var json = _.extend(data.json, { socketId: data.socketId });
 
-  // validate json to prevent alient content on socket.io bugs
+  // validate json to prevent alien content or socket.io bugs
   if (validator && !validator(data.json)) return;
+
   switch (data.event) {
     case 'add':
       collection.add(data.json, { socketId: data.socketId });
@@ -113,12 +151,12 @@ Socket.prototype.onsync = function(data) {
   this.trigger(data.name + ':' + data.event, json);
 };
 
-// internal method to subscribe on socket.io events
-Socket.prototype.subscribe = function(event, cb) {
-  this.socket.on(event, cb.bind(this));
-};
+/**
+ * Get id of current socket.
+ *
+ * @return {String}
+ */
 
-// shortcut for socket id
 Socket.prototype.socketId = function() {
   return this.socket.socket.sessionid;
 };
