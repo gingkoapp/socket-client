@@ -1,3 +1,9 @@
+## 0.4.0 / 2014-04-16
+
+  * support socket-server@0.2
+  * refactoring
+  * use underscore instead of segmentio/extend
+
 ### 0.3.1 / 2014-04-08
 
   * reorganization
