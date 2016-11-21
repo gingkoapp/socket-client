@@ -1,6 +1,6 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
-var io = require('./vendor/socket.io-client.min');
+var io = require('./vendor/socket-noflash.min');
 
 /**
  * Reserved sync events.

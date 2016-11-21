@@ -1,6 +1,6 @@
 {
   "name": "socket-client",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "repository": "gingkoapp/socket-client",
   "description": "Sync Backbone.Collection instance with server through socket.io",
   "main": "index.js",
@@ -22,6 +22,6 @@
   },
   "scripts": [
     "index.js",
-    "vendor/socket.io-client.min.js"
+    "vendor/socket-noflash.min.js"
   ]
 }
