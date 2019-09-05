@@ -1,0 +1,21 @@
+{
+  "name": "socket-client",
+  "version": "0.4.1",
+  "description": "Sync Backbone.COllection instance with server through socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gingkoapp/socket-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gingkoapp/socket-client/issues"
+  },
+  "homepage": "https://github.com/gingkoapp/socket-client#readme",
+  "dependencies": {
+    "backbone": "^1.4.0",
+    "underscore": "^1.9.1"
+  }
+}
